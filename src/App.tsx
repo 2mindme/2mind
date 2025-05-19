@@ -7,9 +7,6 @@ import ProfilePage from './pages/ProfilePage';
 import QuestsPage from './pages/QuestsPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import PhysicalPage from './pages/PhysicalPage';
-import MentalPage from './pages/MentalPage';
-import SocialPage from './pages/SocialPage';
-import FinancialPage from './pages/FinancialPage';
 import OnboardingPage from './pages/OnboardingPage';
 
 const App: React.FC = () => {
@@ -24,9 +21,6 @@ const App: React.FC = () => {
           <Route path="/quests" element={<QuestsPage />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/physical" element={<PhysicalPage />} />
-          <Route path="/mental" element={<MentalPage />} />
-          <Route path="/social" element={<SocialPage />} />
-          <Route path="/financial" element={<FinancialPage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </BrowserRouter>

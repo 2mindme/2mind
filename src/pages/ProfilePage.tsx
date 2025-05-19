@@ -115,7 +115,7 @@ const ProfilePage: React.FC = () => {
           ...prev,
           id: user.id,
           name: profile?.name || 'Usuário',
-          level: profile?.level || 1,
+          level: profile?.level ?? 1,
           experience: profile?.experience || 0,
           activePersona: profile?.active_persona || 'default',
           currency: profile?.currency || 100,
@@ -249,7 +249,7 @@ const ProfilePage: React.FC = () => {
             sleep_quality: Number(editedProfile.sleepQuality),
             diet_quality: Number(editedProfile.dietQuality),
             fitness_goal: editedProfile.fitnessGoal,
-            health_issues: editedProfile.healthIssues.split(',').map(issue => issue.trim())
+            health_issues: editedProfile.healthIssues?.split(',').map(issue => issue.trim()) || []
           },
           mental: {
             stress_level: Number(editedProfile.stressLevel),
@@ -259,7 +259,7 @@ const ProfilePage: React.FC = () => {
           },
           intellectual: {
             education_level: editedProfile.educationLevel,
-            learning_interests: editedProfile.learningInterests.split(',').map(interest => interest.trim()),
+            learning_interests: editedProfile.learningInterests?.split(',').map(interest => interest.trim()) || [],
             reading_frequency: editedProfile.readingFrequency,
             intellectual_level: Number(editedProfile.intellectualLevel)
           },
@@ -279,8 +279,8 @@ const ProfilePage: React.FC = () => {
             income_range: editedProfile.incomeRange,
             savings_habit: Number(editedProfile.savingsHabit),
             financial_literacy: Number(editedProfile.financialLiteracy),
-            financial_goal: editedProfile.financialGoal,
-            debt_level: editedProfile.debtLevel
+            financial_goal: editedProfile.financial_goal,
+            debt_level: editedProfile.debt_level
           }
         }
       };

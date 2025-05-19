@@ -200,7 +200,7 @@ const QuestsPage: React.FC = () => {
           
           // Se houve aumento de nível
           if (rewards.levelUp) {
-            rewardMessage += ` Parabéns! Você avançou para o nível ${profile?.level + 1}!`;
+            rewardMessage += ` Parabéns! Você avançou para o nível ${profile?.level ?? 1 + 1}!`;
           }
           
           // Se existem atributos melhorados, adicionar à mensagem
