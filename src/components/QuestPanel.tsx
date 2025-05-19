@@ -156,15 +156,17 @@ const QuestPanel: React.FC<QuestPanelProps> = ({ quests, onCompleteQuest }) => {
 
   // Cores associadas à dificuldade
   const difficultyColors = {
-    [QuestDifficulty.Easy]: 'bg-green-500',
-    [QuestDifficulty.Medium]: 'bg-yellow-500',
-    [QuestDifficulty.Hard]: 'bg-red-500',
-    [QuestDifficulty.Boss]: 'bg-purple-500',
+    'Fácil': 'bg-green-500',
+    'Médio': 'bg-yellow-500',
+    'Difícil': 'bg-red-500',
+    'Chefe': 'bg-purple-500',
     'easy': 'bg-green-500',
     'medium': 'bg-yellow-500',
     'hard': 'bg-red-500',
     'boss': 'bg-purple-500'
-  };
+  } as const;
+
+  type DifficultyKey = keyof typeof difficultyColors;
 
   // Ícones associados à categoria
   const categoryIcons: Record<string, string> = {
@@ -242,6 +244,10 @@ const QuestPanel: React.FC<QuestPanelProps> = ({ quests, onCompleteQuest }) => {
     return 'boss';
   };
 
+  const getDifficultyColor = (difficulty: string) => {
+    return difficultyColors[difficulty as DifficultyKey] || 'bg-gray-500';
+  };
+
   // Função para completar a missão
   const handleCompleteQuest = (questId: string) => {
     if (selectedQuest && selectedQuest.id === questId) {
@@ -269,7 +275,7 @@ const QuestPanel: React.FC<QuestPanelProps> = ({ quests, onCompleteQuest }) => {
                   <span className="text-xl mr-2">{categoryIcons[category]}</span>
                   <h3 className="font-medium text-sm">{quest.title}</h3>
                 </div>
-                <div className={`text-xs px-2 py-0.5 rounded-full ${difficultyColors[difficulty]} text-white`}>
+                <div className={`text-xs px-2 py-0.5 rounded-full ${getDifficultyColor(difficulty)} text-white`}>
                   {difficulty === 'easy' ? 'Fácil' : 
                    difficulty === 'medium' ? 'Médio' : 
                    difficulty === 'hard' ? 'Difícil' : 'Chefe'}

@@ -38,7 +38,7 @@ export interface Task {
   recurringType?: 'daily' | 'weekly' | 'monthly';
   dueDate?: string;
   createdAt: string;
-  completedAt?: string;
+  completedAt: string | null;
 }
 
 export interface Buff {

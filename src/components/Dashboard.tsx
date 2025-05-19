@@ -10,8 +10,16 @@ import StatusEffects from './StatusEffects';
 import LeaderboardPanel from './LeaderboardPanel';
 import StorePanel from './StorePanel';
 import { UserData, QuestType } from '../types/gameTypes';
+import { useAuth } from '../context/AuthContext';
+import { Task } from '../types';
+import StatusEffect from './StatusEffect';
 
 const Dashboard: React.FC = () => {
+  const { user, profile, tasks, completeTask } = useAuth();
+  const [activeTab, setActiveTab] = useState('quests');
+  const [showSkillTree, setShowSkillTree] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+
   const [userData, setUserData] = useState<UserData>({
     id: '1',
     name: 'Caçador Solo',
