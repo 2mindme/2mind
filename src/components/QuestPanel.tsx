@@ -5,6 +5,15 @@ import NeuroscienceWidget from './NeuroscienceWidget';
 import QuestModal from './QuestModal';
 import { createPortal } from 'react-dom';
 
+// Enumeração para categorias de quest
+enum QuestCategory {
+  Physical = 'physical',
+  Mental = 'mental',
+  Social = 'social',
+  Personal = 'personal',
+  Professional = 'professional'
+}
+
 interface QuestPanelProps {
   quests: QuestType[];
   onCompleteQuest: (questId: string) => void;

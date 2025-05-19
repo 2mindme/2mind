@@ -9,6 +9,7 @@ const ProfilePage: React.FC = () => {
   const { user, profile, updateProfile } = useAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   
   const [userData, setUserData] = useState<UserData>({
     id: '1',
@@ -232,69 +233,65 @@ const ProfilePage: React.FC = () => {
   };
 
   // Salvar alterações no perfil
-  const saveChanges = async () => {
-    if (!user) return;
-    
+  const handleSave = async () => {
     try {
-      setUpdating(true);
+      setLoading(true);
       
-      // Preparar os dados a serem atualizados
-      const updateData = {
+      // Preparar dados para atualização
+      const updateData: Partial<User> = {
         name: editedProfile.name,
         onboarding_data: {
-          ...profile?.onboarding_data,
-          age: editedProfile.age,
+          age: Number(editedProfile.age),
           physical: {
-            ...profile?.onboarding_data?.physical,
-            height: parseFloat(editedProfile.height),
-            weight: parseFloat(editedProfile.weight),
+            height: Number(editedProfile.height),
+            weight: Number(editedProfile.weight),
             activity_level: editedProfile.activityLevel,
-            gender: editedProfile.gender
+            sleep_quality: Number(editedProfile.sleepQuality),
+            diet_quality: Number(editedProfile.dietQuality),
+            fitness_goal: editedProfile.fitnessGoal,
+            health_issues: editedProfile.healthIssues.split(',').map(issue => issue.trim())
+          },
+          mental: {
+            stress_level: Number(editedProfile.stressLevel),
+            mental_health: editedProfile.mentalHealth,
+            focus_ability: Number(editedProfile.focusAbility),
+            meditation_experience: editedProfile.meditationExperience
           },
           intellectual: {
-            ...profile?.onboarding_data?.intellectual,
             education_level: editedProfile.educationLevel,
-            reading_frequency: editedProfile.readingFrequency
+            learning_interests: editedProfile.learningInterests.split(',').map(interest => interest.trim()),
+            reading_frequency: editedProfile.readingFrequency,
+            intellectual_level: Number(editedProfile.intellectualLevel)
           },
           emotional: {
-            ...profile?.onboarding_data?.emotional,
+            emotional_awareness: Number(editedProfile.emotionalAwareness),
+            emotional_regulation: Number(editedProfile.emotionalRegulation),
+            life_balance: Number(editedProfile.lifeBalance),
             relationship_status: editedProfile.relationshipStatus
           },
           social: {
-            ...profile?.onboarding_data?.social,
-            social_circle_size: editedProfile.socialCircleSize
+            social_circle_size: editedProfile.socialCircleSize,
+            social_satisfaction: Number(editedProfile.socialSatisfaction),
+            communication_skills: Number(editedProfile.communicationSkills),
+            networking_ability: Number(editedProfile.networkingAbility)
           },
           financial: {
-            ...profile?.onboarding_data?.financial,
-            income_range: editedProfile.incomeRange
+            income_range: editedProfile.incomeRange,
+            savings_habit: Number(editedProfile.savingsHabit),
+            financial_literacy: Number(editedProfile.financialLiteracy),
+            financial_goal: editedProfile.financialGoal,
+            debt_level: editedProfile.debtLevel
           }
         }
       };
-      
-      // Atualizar no Supabase
-      try {
-        const { error } = await updateUserProfile(user.id, updateData);
-        
-        if (error) {
-          throw error;
-        }
-        
-        // Atualizar o contexto local
-        await updateProfile(updateData);
-      } catch (err) {
-        console.error('Erro ao atualizar no Supabase:', err);
-        // Mesmo com erro no Supabase, continuamos atualizando a UI localmente
-      }
-      
-      // Atualizar o estado local
-      setUserProfile(editedProfile);
-      setIsEditing(false);
-      
+
+      await updateProfile(updateData);
+      setSuccess('Perfil atualizado com sucesso!');
     } catch (error) {
       console.error('Erro ao atualizar perfil:', error);
-      alert('Ocorreu um erro ao salvar as alterações. Por favor, tente novamente.');
+      setError('Erro ao atualizar perfil. Tente novamente.');
     } finally {
-      setUpdating(false);
+      setLoading(false);
     }
   };
 
@@ -599,7 +596,7 @@ const ProfilePage: React.FC = () => {
                 Cancelar
               </button>
               <button
-                onClick={saveChanges}
+                onClick={handleSave}
                 className="px-4 py-2 bg-info text-white rounded-lg hover:bg-info/90 transition disabled:opacity-50"
                 disabled={updating}
               >
