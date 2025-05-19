@@ -1,0 +1,99 @@
+/* Importando a fonte DM Sans do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-white min-h-screen bg-dashboard-background;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background-dark;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-card rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-card-light;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-glass-gradient rounded-2xl backdrop-blur-sm shadow-card border border-card-light/20 p-6;
+  }
+  
+  .btn {
+    @apply px-4 py-2 rounded-xl font-medium transition-all duration-200 shadow-button focus:outline-none;
+  }
+  
+  .btn-primary {
+    @apply btn bg-primary-gradient text-white hover:shadow-glow;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-secondary-gradient text-white hover:shadow-glow;
+  }
+  
+  .btn-success {
+    @apply btn bg-success-gradient text-white hover:shadow-glow;
+  }
+
+  .btn-info {
+    @apply btn bg-info-gradient text-white hover:shadow-glow;
+  }
+
+  .btn-warning {
+    @apply btn bg-warning-gradient text-white hover:shadow-glow;
+  }
+
+  .btn-danger {
+    @apply btn bg-danger-gradient text-white hover:shadow-glow;
+  }
+  
+  .btn-glass {
+    @apply btn bg-glass-gradient text-white border border-white/10 hover:border-white/20;
+  }
+
+  .input {
+    @apply w-full px-4 py-3 bg-card-light/50 border border-white/10 rounded-xl text-white focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 placeholder-gray-400;
+  }
+
+  .stat-card {
+    @apply bg-glass-gradient rounded-2xl shadow-card border border-card-light/20 p-4 hover:shadow-glow transition-all duration-300;
+  }
+
+  .progress-bar {
+    @apply h-2 rounded-full overflow-hidden bg-background-dark;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply badge bg-success-light text-success;
+  }
+
+  .badge-info {
+    @apply badge bg-info-light text-info;
+  }
+
+  .badge-warning {
+    @apply badge bg-warning-light text-warning;
+  }
+
+  .badge-danger {
+    @apply badge bg-danger-light text-danger;
+  }
+} 
