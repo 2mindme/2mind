@@ -1,19 +1,19 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Session, User } from '@supabase/supabase-js';
+import { Session, User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase, getUserProfile, getUserTasks, completeQuest, createUserTask } from '../lib/supabase';
-import { Task } from '../types';
+import { Task, User } from '../types';
 
 interface AuthContextType {
   session: Session | null;
   user: User | null;
-  profile: any | null;
+  profile: User | null;
   tasks: Task[];
   loading: boolean;
   error: string | null;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signUp: (email: string, password: string) => Promise<{ error: any, needsOnboarding?: boolean }>;
   signOut: () => Promise<void>;
-  updateProfile: (updates: any) => Promise<{ error: any }>;
+  updateProfile: (updates: Partial<User>) => Promise<{ error: any }>;
   register: (username: string, email: string, password: string) => Promise<{ error: any, needsOnboarding?: boolean }>;
   completeTask: (taskId: string) => Promise<void>;
   createTask: (taskData: Omit<Task, 'id' | 'completed' | 'completedAt' | 'createdAt'>) => Promise<{ data: Task | null, error: any }>;
@@ -36,7 +36,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<any | null>(null);
+  const [profile, setProfile] = useState<User | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -45,8 +45,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Obter a sessão atual quando o componente é montado
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      setUser(session?.user ?? null);
       if (session?.user) {
+        const userData: User = {
+          id: session.user.id,
+          email: session.user.email || '',
+          username: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'Novo Usuário',
+          level: 1,
+          currentXP: 0,
+          xpToNextLevel: 100,
+          stats: {
+            strength: 0,
+            intellect: 0,
+            discipline: 0,
+            creativity: 0,
+            resilience: 0
+          },
+          buffs: [],
+          debuffs: [],
+          achievements: [],
+          tasks: [],
+          createdAt: new Date().toISOString()
+        };
+        setUser(userData);
         fetchProfile(session.user.id);
         fetchTasks(session.user.id);
       }
@@ -56,11 +76,32 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Configurar um listener para mudanças na autenticação
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      setUser(session?.user ?? null);
       if (session?.user) {
+        const userData: User = {
+          id: session.user.id,
+          email: session.user.email || '',
+          username: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'Novo Usuário',
+          level: 1,
+          currentXP: 0,
+          xpToNextLevel: 100,
+          stats: {
+            strength: 0,
+            intellect: 0,
+            discipline: 0,
+            creativity: 0,
+            resilience: 0
+          },
+          buffs: [],
+          debuffs: [],
+          achievements: [],
+          tasks: [],
+          createdAt: new Date().toISOString()
+        };
+        setUser(userData);
         fetchProfile(session.user.id);
         fetchTasks(session.user.id);
       } else {
+        setUser(null);
         setProfile(null);
         setTasks([]);
       }
@@ -79,7 +120,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (error) {
         throw error;
       }
-      setProfile(data);
+      if (data) {
+        const userData: User = {
+          ...data,
+          username: data.name || data.email?.split('@')[0] || 'Novo Usuário',
+          currentXP: data.experience || 0,
+          xpToNextLevel: 100,
+          stats: {
+            strength: 0,
+            intellect: 0,
+            discipline: 0,
+            creativity: 0,
+            resilience: 0
+          },
+          buffs: [],
+          debuffs: [],
+          achievements: [],
+          tasks: [],
+          createdAt: data.created_at || new Date().toISOString()
+        };
+        setProfile(userData);
+      }
     } catch (error: any) {
       setError(error.message);
     }
@@ -91,7 +152,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (error) {
         throw error;
       }
-      setTasks(data || []);
+      if (data) {
+        const tasks: Task[] = data.map((task: any) => ({
+          id: task.id,
+          title: task.title,
+          description: task.description,
+          xpReward: task.xp_reward,
+          completed: task.completed,
+          recurring: task.recurring,
+          recurringType: task.recurring_type,
+          dueDate: task.due_date,
+          createdAt: task.created_at,
+          completedAt: task.completed_at,
+          statBoosts: task.stat_boosts || {}
+        }));
+        setTasks(tasks);
+      }
     } catch (error: any) {
       console.error("Erro ao buscar tarefas:", error);
     }
@@ -280,7 +356,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const updateProfile = async (updates: any) => {
+  const updateProfile = async (updates: Partial<User>) => {
     try {
       setLoading(true);
       setError(null);

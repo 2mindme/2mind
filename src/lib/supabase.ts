@@ -57,11 +57,28 @@ export const updateUserProfile = async (userId: string, updates: any) => {
 
 // Função para obter missões
 export const getQuests = async () => {
-  const { data, error } = await supabase
-    .from('quests')
-    .select('*')
-    .order('created_at', { ascending: false });
-  return { data, error };
+  try {
+    const { data, error } = await supabase
+      .from('quests')
+      .select('*');
+
+    if (error) throw error;
+
+    const quests = data.map((quest: any) => ({
+      id: quest.id,
+      title: quest.title,
+      description: quest.description,
+      xpReward: quest.xp_reward,
+      recurring: quest.recurring,
+      recurringType: quest.recurring_type,
+      statBoosts: quest.stat_boosts || {}
+    }));
+
+    return { data: quests, error: null };
+  } catch (error) {
+    console.error('Erro ao buscar quests:', error);
+    return { data: null, error };
+  }
 };
 
 // Função para obter missões de um usuário
@@ -486,47 +503,16 @@ export const addUserRewards = async (userId: string, xpReward: number, currencyR
 export const getUserTasks = async (userId: string) => {
   try {
     const { data, error } = await supabase
-      .from('user_quests')
-      .select(`
-        id,
-        status,
-        progress,
-        created_at,
-        completed_at,
-        due_date,
-        quests (
-          id,
-          title,
-          description,
-          xp_reward,
-          recurring,
-          recurring_type,
-          stat_boosts
-        )
-      `)
+      .from('tasks')
+      .select('*')
       .eq('user_id', userId);
-    
+
     if (error) throw error;
-    
-    // Converter o formato do banco para o formato da aplicação
-    const tasks = data?.map(item => ({
-      id: item.id,
-      title: item.quests.title,
-      description: item.quests.description,
-      xpReward: item.quests.xp_reward,
-      completed: item.status === 'completed',
-      recurring: item.quests.recurring || false,
-      recurringType: item.quests.recurring_type,
-      dueDate: item.due_date,
-      createdAt: item.created_at,
-      completedAt: item.completed_at,
-      statBoosts: item.quests.stat_boosts || {}
-    })) || [];
-    
-    return { data: tasks, error: null };
+
+    return { data, error: null };
   } catch (error) {
-    console.error("Erro ao obter tarefas:", error);
-    return { data: [], error };
+    console.error('Erro ao buscar tarefas:', error);
+    return { data: null, error };
   }
 };
 

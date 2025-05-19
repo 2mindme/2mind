@@ -12,6 +12,11 @@ export interface User {
   achievements: Achievement[];
   tasks: Task[];
   createdAt: string;
+  created_at?: string;
+  name?: string;
+  experience?: number;
+  currency?: number;
+  has_completed_onboarding?: boolean;
 }
 
 export interface UserStats {
