@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Quest, QuestDifficulty, QuestType, QuestCategory } from '../types/gameTypes';
+import { QuestType } from '../types/gameTypes';
 import NeuroscienceWidget from './NeuroscienceWidget';
 import QuestModal from './QuestModal';
 import { createPortal } from 'react-dom';

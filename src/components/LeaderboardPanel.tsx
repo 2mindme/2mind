@@ -28,37 +28,36 @@ const LeaderboardPanel: React.FC<LeaderboardPanelProps> = ({
     [key: string]: LeaderboardEntry[]
   } = {
     daily: [
-      { userId: '1', username: 'ProdutividadeMáxima', level: 12, achievements: 28, quests: 47, rank: 'C', avatar: '👨‍💼' },
-      { userId: '2', username: 'FocusNinja', level: 10, achievements: 25, quests: 42, rank: 'D', avatar: '🥷' },
-      { userId: '3', username: 'MestreDasMetas', level: 9, achievements: 23, quests: 39, rank: 'D', avatar: '👨‍🎓' },
-      { userId: '4', username: 'DisciplinaTotal', level: 8, achievements: 19, quests: 33, rank: 'E', avatar: '👨‍🚀' },
-      { userId: '5', username: 'SuperProdutivo', level: 7, achievements: 16, quests: 29, rank: 'E', avatar: '👩‍💻' },
+      { userId: '1', username: 'ProdutividadeMáxima', level: 12, achievements: 28, quests: 47, rank: 'Bronze', avatar: '👨‍💼' },
+      { userId: '2', username: 'FocusNinja', level: 10, achievements: 25, quests: 42, rank: 'Bronze', avatar: '🥷' },
+      { userId: '3', username: 'MestreDasMetas', level: 9, achievements: 23, quests: 39, rank: 'Bronze', avatar: '👨‍🎓' },
+      { userId: '4', username: 'DisciplinaTotal', level: 8, achievements: 19, quests: 33, rank: 'Bronze', avatar: '👨‍🚀' },
+      { userId: '5', username: 'SuperProdutivo', level: 7, achievements: 16, quests: 29, rank: 'Bronze', avatar: '👩‍💻' },
     ],
     weekly: [
-      { userId: '6', username: 'HabitosMaster', level: 15, achievements: 42, quests: 87, rank: 'B', avatar: '👨‍🔬' },
-      { userId: '7', username: 'MenteFocada', level: 14, achievements: 36, quests: 76, rank: 'C', avatar: '🧙‍♂️' },
-      { userId: '1', username: 'ProdutividadeMáxima', level: 12, achievements: 28, quests: 67, rank: 'C', avatar: '👨‍💼' },
-      { userId: '8', username: 'DopaminaControle', level: 11, achievements: 26, quests: 54, rank: 'D', avatar: '👩‍🎓' },
-      { userId: '2', username: 'FocusNinja', level: 10, achievements: 25, quests: 51, rank: 'D', avatar: '🥷' },
+      { userId: '6', username: 'HabitosMaster', level: 15, achievements: 42, quests: 87, rank: 'Prata', avatar: '👨‍🔬' },
+      { userId: '7', username: 'MenteFocada', level: 14, achievements: 36, quests: 76, rank: 'Bronze', avatar: '🧙‍♂️' },
+      { userId: '1', username: 'ProdutividadeMáxima', level: 12, achievements: 28, quests: 67, rank: 'Bronze', avatar: '👨‍💼' },
+      { userId: '8', username: 'DopaminaControle', level: 11, achievements: 26, quests: 54, rank: 'Bronze', avatar: '👩‍🎓' },
+      { userId: '2', username: 'FocusNinja', level: 10, achievements: 25, quests: 51, rank: 'Bronze', avatar: '🥷' },
     ],
     monthly: [
-      { userId: '9', username: 'SuperaçãoConstante', level: 25, achievements: 87, quests: 315, rank: 'S', avatar: '👑' },
-      { userId: '10', username: 'NeuroplasticMind', level: 23, achievements: 79, quests: 298, rank: 'A', avatar: '🧠' },
-      { userId: '6', username: 'HabitosMaster', level: 20, achievements: 68, quests: 264, rank: 'B', avatar: '👨‍🔬' },
-      { userId: '11', username: 'MetaCrush', level: 18, achievements: 65, quests: 251, rank: 'B', avatar: '💪' },
-      { userId: '7', username: 'MenteFocada', level: 17, achievements: 59, quests: 237, rank: 'C', avatar: '🧙‍♂️' },
+      { userId: '9', username: 'SuperaçãoConstante', level: 25, achievements: 87, quests: 315, rank: 'Diamante', avatar: '👑' },
+      { userId: '10', username: 'NeuroplasticMind', level: 23, achievements: 79, quests: 298, rank: 'Platina', avatar: '🧠' },
+      { userId: '6', username: 'HabitosMaster', level: 20, achievements: 68, quests: 264, rank: 'Ouro', avatar: '👨‍🔬' },
+      { userId: '11', username: 'MetaCrush', level: 18, achievements: 65, quests: 251, rank: 'Prata', avatar: '💪' },
+      { userId: '7', username: 'MenteFocada', level: 17, achievements: 59, quests: 237, rank: 'Bronze', avatar: '🧙‍♂️' },
     ]
   };
 
-  // Cores associadas a cada rank (ordem decrescente: E, D, C, B, A, S)
+  // Cores associadas a cada rank
   const rankColors = {
-    'E': 'text-gray-500',
-    'D': 'text-green-500',
-    'C': 'text-blue-500',
-    'B': 'text-purple-500',
-    'A': 'text-amber-500',
-    'S': 'text-red-500'
-  };
+    'Bronze': 'text-gray-500',
+    'Prata': 'text-green-500',
+    'Ouro': 'text-blue-500',
+    'Platina': 'text-purple-500',
+    'Diamante': 'text-red-500'
+  } as const;
 
   // Decidir qual conjunto de dados usar
   const displayData = {

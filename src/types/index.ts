@@ -17,6 +17,51 @@ export interface User {
   experience?: number;
   currency?: number;
   has_completed_onboarding?: boolean;
+  onboarding_data?: {
+    age?: number;
+    gender?: string;
+    physical?: {
+      height?: number;
+      weight?: number;
+      activity_level?: string;
+      sleep_quality?: number;
+      diet_quality?: number;
+      fitness_goal?: string;
+      health_issues?: string[];
+    };
+    mental?: {
+      stress_level?: number;
+      mental_health?: string;
+      focus_ability?: number;
+      meditation_experience?: string;
+    };
+    intellectual?: {
+      education_level?: string;
+      learning_interests?: string[];
+      reading_frequency?: string;
+      intellectual_level?: number;
+    };
+    emotional?: {
+      emotional_awareness?: number;
+      emotional_regulation?: number;
+      life_balance?: number;
+      relationship_status?: string;
+    };
+    social?: {
+      social_circle_size?: string;
+      social_satisfaction?: number;
+      communication_skills?: number;
+      networking_ability?: number;
+    };
+    financial?: {
+      income_range?: string;
+      savings_habit?: number;
+      financial_literacy?: number;
+      financial_goal?: string;
+      debt_level?: string;
+    };
+  };
+  active_persona?: string;
 }
 
 export interface UserStats {

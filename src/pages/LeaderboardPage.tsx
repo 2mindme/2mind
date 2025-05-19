@@ -8,12 +8,15 @@ const LeaderboardPage: React.FC = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [leaderboardData, setLeaderboardData] = useState<any>({
+  const [leaderboardData, setLeaderboardData] = useState<{
+    daily: any[];
+    weekly: any[];
+    monthly: any[];
+  }>({
     daily: [],
     weekly: [],
     monthly: []
   });
-  const [timeframe, setTimeframe] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
 
   useEffect(() => {
     const loadLeaderboardData = async () => {
@@ -47,10 +50,6 @@ const LeaderboardPage: React.FC = () => {
     
     loadLeaderboardData();
   }, []);
-
-  const handleTimeframeChange = (newTimeframe: 'daily' | 'weekly' | 'monthly') => {
-    setTimeframe((prev: 'daily' | 'weekly' | 'monthly') => newTimeframe);
-  };
 
   return (
     <div className="space-y-6">
